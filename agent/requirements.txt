@@ -1,0 +1,7 @@
+requests==2.31.0
+schedule==1.2.0
+python-dotenv==1.0.1
+psutil==5.9.6
+wmi==1.5.1
+pywin32==306
+requests-toolbelt==1.0.0

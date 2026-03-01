@@ -1,0 +1,97 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: helpdesk-db
+    environment:
+      POSTGRES_USER: helpdesk
+      POSTGRES_PASSWORD: helpdesk_password
+      POSTGRES_DB: helpdesk_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U helpdesk"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - helpdesk-network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: helpdesk-backend
+    environment:
+      DATABASE_URL: postgresql://helpdesk:helpdesk_password@db:5432/helpdesk_db
+      SECRET_KEY: ${SECRET_KEY:-your-super-secret-key-change-in-production}
+      AGENT_API_KEY: ${AGENT_API_KEY:-your-agent-api-key-change-in-production}
+      SMTP_ENABLED: ${SMTP_ENABLED:-False}
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL:-helpdesk@district.edu}
+      GOOGLE_CHAT_ENABLED: ${GOOGLE_CHAT_ENABLED:-False}
+      GOOGLE_CHAT_WEBHOOK_URL: ${GOOGLE_CHAT_WEBHOOK_URL:-}
+      CVE_CHECK_INTERVAL_HOURS: ${CVE_CHECK_INTERVAL_HOURS:-168}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/app:/app/app
+    networks:
+      - helpdesk-network
+    restart: unless-stopped
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: helpdesk-frontend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - helpdesk-network
+    restart: unless-stopped
+
+  # Optional: Deployable Agent (for testing in Docker)
+  agent:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    container_name: helpdesk-agent
+    environment:
+      HELPDESK_API_URL: http://backend:8000/api
+      AGENT_API_KEY: ${AGENT_API_KEY:-your-agent-api-key-change-in-production}
+      ASSET_TAG: docker-agent-001
+      REPORT_INTERVAL_HOURS: 24
+      CVE_CHECK_INTERVAL_HOURS: 168
+    depends_on:
+      - backend
+    networks:
+      - helpdesk-network
+    restart: unless-stopped
+    profiles:
+      - agent
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  helpdesk-network:
+    driver: bridge

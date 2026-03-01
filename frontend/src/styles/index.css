@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply transition-colors duration-200;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+.btn-primary {
+  @apply px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 disabled:opacity-50;
+}
+
+.btn-secondary {
+  @apply px-4 py-2 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300;
+}
+
+.btn-danger {
+  @apply px-4 py-2 bg-danger text-white rounded-lg hover:bg-red-700;
+}
+
+.card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+}
+
+.badge {
+  @apply inline-block px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.badge-primary {
+  @apply badge bg-blue-100 text-primary;
+}
+
+.badge-success {
+  @apply badge bg-green-100 text-success;
+}
+
+.badge-warning {
+  @apply badge bg-yellow-100 text-warning;
+}
+
+.badge-danger {
+  @apply badge bg-red-100 text-danger;
+}
+
+.badge-info {
+  @apply badge bg-cyan-100 text-info;
+}
+
+.input-field {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+}
+
+.table-cell {
+  @apply px-6 py-4 whitespace-nowrap text-sm;
+}
+
+.sidebar {
+  @apply fixed left-0 top-0 h-screen w-64 bg-white border-r border-gray-200 shadow-sm;
+}
+
+.main-content {
+  @apply ml-64 p-8;
+}
+
+.modal-overlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+.modal-content {
+  @apply bg-white rounded-lg shadow-lg max-w-2xl w-full mx-4;
+}
+
+.loading {
+  @apply animate-spin inline-block w-5 h-5 border-2 border-current border-t-transparent rounded-full;
+}
+
+.error-message {
+  @apply text-danger text-sm mt-1;
+}
+
+.success-message {
+  @apply text-success text-sm mt-1;
+}
