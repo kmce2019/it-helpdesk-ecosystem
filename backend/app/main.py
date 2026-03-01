@@ -12,6 +12,31 @@ from .services.cve_service import run_full_cve_scan
 # Create tables
 Base.metadata.create_all(bind=engine)
 
+from .database import SessionLocal
+from .models.models import User, UserRole
+from .utils.auth import get_password_hash
+
+def bootstrap_admin():
+    db = SessionLocal()
+    try:
+        user_count = db.query(User).count()
+        if user_count == 0:
+            admin = User(
+                username=settings.BOOTSTRAP_ADMIN_USERNAME,
+                email="admin@local.invalid",
+                full_name="System Administrator",
+                hashed_password=get_password_hash(settings.BOOTSTRAP_ADMIN_PASSWORD),
+                role=UserRole.admin,
+                is_active=True,
+            )
+            db.add(admin)
+            db.commit()
+            print("✅ Bootstrapped initial admin user")
+    finally:
+        db.close()
+
+bootstrap_admin()
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
