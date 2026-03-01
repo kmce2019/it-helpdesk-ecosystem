@@ -32,13 +32,6 @@ api.interceptors.response.use(
 )
 
 export const authService = {
-  login: (username, password) => api.post('/auth/token', { username, password }, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }),
-  getMe: () => api.get('/auth/me'),
-}
-
-export const authService = {
   login: (data) => api.post('/auth/token', data),
   me: () => api.get('/auth/me'),
   register: (data) => api.post('/auth/register', data),
