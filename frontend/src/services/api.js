@@ -90,11 +90,12 @@ export const assetsService = {
 
 /*
 |--------------------------------------------------------------------------
-| Reports Service
+| Reporting Service (matches DashboardPage / ReportsPage)
 |--------------------------------------------------------------------------
 */
 
-export const reportsService = {
+export const reportingService = {
+  getDashboard: () => api.get("/reports/dashboard"),
   getSummary: () => api.get("/reports/summary"),
   getSlaReport: () => api.get("/reports/sla"),
 }
