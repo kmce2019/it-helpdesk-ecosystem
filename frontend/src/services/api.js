@@ -38,6 +38,13 @@ export const authService = {
   getMe: () => api.get('/auth/me'),
 }
 
+export const authService = {
+  login: (data) => api.post('/auth/token', data),
+  me: () => api.get('/auth/me'),
+  register: (data) => api.post('/auth/register', data),
+  registrationEnabled: () => api.get('/auth/registration-enabled'),
+}
+
 export const ticketsService = {
   list: (params) => api.get('/tickets', { params }),
   get: (id) => api.get(`/tickets/${id}`),
