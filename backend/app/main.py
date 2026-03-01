@@ -100,6 +100,11 @@ def shutdown_event():
     scheduler.shutdown()
     logger.info(f"{settings.APP_NAME} stopped")
 
+# Auth / Registration
+OPEN_REGISTRATION: bool = False
+BOOTSTRAP_ADMIN_USERNAME: str = "admin"
+BOOTSTRAP_ADMIN_PASSWORD: str = "password"
+
 
 if __name__ == "__main__":
     import uvicorn
