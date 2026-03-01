@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
-import { FiHome, FiTicket, FiHardDrive, FiBarChart2, FiSettings, FiLogOut, FiMenu } from 'react-icons/fi'
+import { FiHome, FiTag, FiHardDrive, FiBarChart2, FiSettings, FiLogOut, FiMenu } from 'react-icons/fi'
 import { useState } from 'react'
 
 export default function Layout({ children }) {
@@ -12,7 +12,7 @@ export default function Layout({ children }) {
 
   const navItems = [
     { path: '/', label: 'Dashboard', icon: FiHome },
-    { path: '/tickets', label: 'Tickets', icon: FiTicket },
+    { path: '/tickets', label: 'Tickets', icon: FiTag },
     { path: '/assets', label: 'Assets', icon: FiHardDrive },
     { path: '/reports', label: 'Reports', icon: FiBarChart2 },
     ...(user?.role === 'admin' ? [{ path: '/settings', label: 'Settings', icon: FiSettings }] : []),
