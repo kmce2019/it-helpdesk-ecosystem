@@ -9,8 +9,7 @@ services:
       POSTGRES_USER: helpdesk
       POSTGRES_PASSWORD: helpdesk_password
       POSTGRES_DB: helpdesk_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      
     ports:
       - "5432:5432"
     healthcheck:
